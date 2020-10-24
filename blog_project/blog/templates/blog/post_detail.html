@@ -1,0 +1,73 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+    <link rel="stylesheet" type="text/css" href="{% static '/css/post_detail.css' %}"> 
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}" >
+        <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
+            <small class="text-muted">{{ object.date_posted|date:"F d, Y"}}</small>
+            {% if object.author == user %}
+              <div>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+              </div>
+            {% endif %}
+        </div>
+        <h2 class="article-title">{{ object.title }}</h2>
+        <p class="article-content">{{ object.content }}</p>
+        </div>
+    </article>  
+
+    <form class="my-3" method="POST" action="{% url 'like_post' object.id %}">
+        {% csrf_token %}
+        {% if liked %}
+            <button class="btn btn-danger btn-sm" type="submit" name="post_id" value="{{ post_id }}">Unlike</button>
+        {% else %}
+            <button class="btn btn-primary btn-sm" type="submit" name="post_id" value="{{ post_id }}">Like</button>
+        {% endif %}
+        {{ total_likes }} Likes
+    </form>
+
+    <span>Comments({{ object.blogcomment_set.count }})</span>
+
+    <form class="my-3" method="POST" action="{% url 'create_comment' object.id %}">
+        {% csrf_token %}
+        <input type="text" name="comment" placeholder="Enter your comment" id="comment-text">
+        <input type="hidden" name="parentId" value="">
+        <button class="btn btn-primary" type="submit">Comment</button>
+    </form>
+
+    {% for data in object.blogcomment_set.all %}
+        <div class="card my-2">          
+            <div class="card-title ml-3 mt-1">
+                <img class="comment-profile-img rounded-circle article-img p-1 mt-1 border border-dark" src="{{ data.user.profile.image.url }}" >
+                <strong>{{ data.user }}</strong>  
+                <small class="badge badge-secondary">{{ data.timeStamp | naturaltime }}</small>
+            </div>
+            <div class="ml-3">              
+                {{ data.comment|linebreaks }}               
+                <a class="btn btn-primary my-1" data-toggle="collapse" href="#replyBox{{data.id}}" role="button" aria-expanded="false" aria-controls="replyBox{{data.id}}">
+                    Reply
+                </a>
+                <div class="collapse" id="replyBox{{data.id}}">
+                  <div class="card card-body my-2">
+                    <form method="POST" action="{% url 'create_comment' object.id %}">
+                        {% csrf_token %}
+                        <input type="text" name="comment" placeholder="Enter your comment" id="comment-text">
+                        <input type="hidden" name="parentId" value="{{data.id}}"> 
+                        <button class="btn bg-dark" type="submit">Comment</button>
+                    </form>
+                  </div>
+                </div>
+            </div>                        
+        </div>
+            
+    {% empty %}
+        <p>No comments here yet :(</p>
+    {% endfor %}
+
+{% endblock content %}

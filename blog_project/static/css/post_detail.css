@@ -1,0 +1,16 @@
+.comment-profile-img{
+    width: 40px;
+    height: 40px  
+}
+
+#comment-text{
+    height: 50px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid gray;
+}
+
+.card{
+    border: 1px solid gray;
+}
+
