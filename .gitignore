@@ -1,2 +1,3 @@
 blog_project/.env
 env
+# blog_project/db.sqlite3

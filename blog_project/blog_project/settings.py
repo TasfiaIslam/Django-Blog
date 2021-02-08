@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE'),
-        'NAME': BASE_DIR / config('DB_NAME'),
+        'NAME': os.path.join(BASE_DIR, config('DB_NAME')),
     }
 }
 
