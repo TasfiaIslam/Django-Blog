@@ -39,6 +39,8 @@ ul {
   border: 1px solid gray;
   border-radius: 3px;
   margin-bottom: 20px;
+  -webkit-box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.71);
+  box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.71);
 }
 
 .article-title {
@@ -112,6 +114,8 @@ a.article-title:hover {
   background-color: #a74daa;
   text-align: center;
   color: #fff;
+  -webkit-box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.71);
+  box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.71);
 }
 
 /* Navbar */
